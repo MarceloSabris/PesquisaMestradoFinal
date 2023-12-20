@@ -6,3 +6,9 @@ SELECT  passo,acao,
                  ROUND( CAST( AVG( acuracy_questao_4 ) as NUMERIC), 5 ) ,']') from "Curriculos1"
 where curriculo like 'ExecucaoManual_1,1,1,1,1_exec_%'
 GROUP BY passo,acao order by passo
+
+
+select * from "Curriculos1" where curriculo like '%toma%' ORDER BY "id" asc LIMIT 100 OFFSET 200 id
+-- pagina 3
+
+

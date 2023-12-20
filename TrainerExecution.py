@@ -8,6 +8,7 @@ import time
 import Trainer
 import sort_of_clevr as DataSetClevr 
 from input_ops import create_input_ops
+import DataBase as db
 
 
 def ConfigTrain() : 
@@ -103,27 +104,33 @@ def RumTrainnerEscolheAcao(config):
 
    trainer = ""
    num_actions = 5
-   for quantityExec in range(20) : 
+   config.QtdRunAction = 3 
+   #4
+   for quantityExec in range(6) : 
         print ("**************** Execao {}".format(quantityExec)) 
         Acoes=[]
         UsaRand= True
         posicaoAcao = 0
-        for train in range(config.QtdRunAction): 
+        data = time.strftime(r"%d%m%Y_%H%M", time.localtime())
+        for train in range(int(config.QtdRunAction)): 
             config = ConfigTrain()
-            data = time.strftime(r"%d%m%Y_%H%M", time.localtime())
-            config.trainDir = config.trainDir +"_Automatico_"+ data + "_exec_" + str(train)
+            config.trainDir = config.trainDir +'_'+ data + "_exec_" + str(train)
             trainer = GernerateTrainner(config,trainer)
             print(" ************  Execution Nr {} ".format(
                             train ))
             
-            for stepAction in 63: 
+            if train > 0 :
+               UsaRand = False
+            for stepAction in range(67): 
                 config.tipoEscolha="automatica"
                 if UsaRand == True : 
                     action = random.randint(0,num_actions-1) 
                     Acoes.append(action)
-                      
+                    db.add_new_acao(config.trainDir,action)
+                    config.acao = action
                 else: 
                     action = Acoes[stepAction]  
+                    config.acao = action
                 config.StepChangeGroupRun = 1500 
                 config.GrupDataset =  config.acoes[int(action)] 
                 config.dataset_train = config.DataSetClevr.create_default_splits_perc(config.path,is_full =True,grupoDatasets=config.GrupDataset,is_loadImage=config.is_loadImage)
@@ -156,8 +163,8 @@ def RumTrainner(config):
 def RumManual(config): 
 
    config.QtdRunAction = [100500]
-   config.Actions = [0]
-   config.Exec = 0
+   config.Actions = [3]
+   config.Exec = 1
    config.trainDir = config.trainDir +"_Acao_"+ str(config.Actions[0])+ "_exec_" + str(config.Exec)
    trainer = ""
    qtdsActionRun = config.QtdRunAction
@@ -176,7 +183,6 @@ def RumManual(config):
 
 if __name__ == '__main__':
     config = ConfigTrain()
-    if config.runGenerateDQN ==0:
-       RumManual(config)
-    #else : 
-    #    runGenerateDQN(config) 
+    RumTrainnerEscolheAcao(config) 
+
+   

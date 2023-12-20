@@ -31,6 +31,20 @@ db_string = 'postgresql://{}:{}@{}:{}/{}'.format(db_user, db_pass, db_host, db_p
 db = create_engine(db_string)
 query =""
 
+def add_new_acao(name,acao):
+    try:
+      
+       
+         query = "INSERT INTO \"acoes\" (name,acao) VALUES(\'%s\',%s)" %( name,acao)
+         my_new_string = re.sub('\n\.]', '', query)
+         str_en = str.encode(my_new_string)
+         my_new_string = str_en.decode()
+         db.execute(my_new_string)
+        
+    except Exception as error:
+        print('****************** erro -- ao executar ***********')
+        print(error)
+
  
 def add_new_row(passo,curriculo,accuracy_treinamento,accuracy_teste,acuracy_questao_0,acuracy_questao_1, acuracy_questao_2, acuracy_questao_3, acuracy_questao_4, porcentagem,tipoescolha ,acao,rewardExecution,rewardTotal):
     try:
