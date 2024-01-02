@@ -9,53 +9,35 @@ import Trainer
 import sort_of_clevr as DataSetClevr 
 from input_ops import create_input_ops
 import DataBase as db
+import easydict 
+def teste(a): 
+    print('************************************************oi')
 
 
-def ConfigTrain() : 
-
+def ConfigTrainJupter(): 
+   print('************************************************oi')
+   config =  easydict.EasyDict({
+    "batch_size": 100,
+    "train_steps": 1000
+    })
    #configurações gerais     
    tf.test.is_gpu_available()
    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-   parser = argparse.ArgumentParser()
-   #caminhos
-   parser.add_argument('--datasetPath', type=str, default='Sort-of-CLEVR_teste_decode-image3')
-   parser.add_argument('--trainDir', type=str , default='padrao')
-   parser.add_argument('--path_restore_train', type=str , default='')
-  
+             
+   config.datasetPath =  'Sort-of-CLEVR_teste_decode-image'
+   config.trainDir =  'TesteDQN'
+   config.path_restore_train =  ''
+   config.learning_rate = 2.5e-4
+   config.lr_weight_decay = False
+   config.batch_size = 100
+   config.is_loadImage = False
+   config.runGenerateDQN = 0
+   config.QtdRunAction = 100500
+   config.Actions = 5
+   config.QtdRunTrain = 1
+   config.is_loadImage = False 
    
-   #rede de Treinamento
-   parser.add_argument('--learning_rate', type=float, default=2.5e-4)
-   parser.add_argument('--lr_weight_decay', action='store_true', default=False)
-   parser.add_argument('--batch_size', type=int, default=60)
-   
-  
-      
-   # Grupos de treinamento , acoes e configurações gerais 
-   parser.add_argument('--is_loadImage', type=str , default=True)
-   parser.add_argument('--runGenerateDQN', type=int, default='0')
-
-   
-   parser.add_argument('--QtdRunAction', type=str, default='100500')
-   parser.add_argument('--Actions', type=str, default='5')
-   parser.add_argument('--QtdRunTrain', type=int, default='1')
-   
-    
-    
-     
-     
-   config = parser.parse_args()
-   
-   if type(config.is_loadImage) == type(True): 
-       config.is_loadImage = config.is_loadImage
-   else:
-       if config.is_loadImage == 'True' : 
-            config.is_loadImage = True 
-       else:
-            config.is_loadImage = False
-   
-
-    #Variaveis globais config 
-   config.path =   path = os.path.join('./datasets', config.datasetPath  ) 
+   config.path =  os.path.join('./datasets', config.datasetPath  ) 
 
     #variaveis para controle de execução tempo 
    config.tempogravarlog  =0                            
@@ -86,7 +68,6 @@ def ConfigTrain() :
    config.conv_info = DataSetClevr.get_conv_info()
    _ , config.batch_train,config.imgs = create_input_ops(config.dataset_test,config.batch_size,
                                                is_training=True,is_loadImage=config.is_loadImage)
-    
     
    return config   
 
@@ -124,7 +105,7 @@ def RumTrainnerEscolheAcao(config):
             if train > 0 :
                UsaRand = False
             for stepAction in range(67): 
-                config.tipoEscolha="aleatoriaImagem"
+                config.tipoEscolha="automatica"
                 if UsaRand == True : 
                     action = random.randint(0,num_actions-1) 
                     Acoes.append(action)
@@ -165,7 +146,7 @@ def RumTrainner(config):
 def RumManual(config): 
 
    config.QtdRunAction = [100500]
-   config.Actions = [0]
+   config.Actions = [3]
    config.Exec = 1
    config.trainDir = config.trainDir + "_Acao_"+ str(config.Actions[0])+ "_exec_" + str(config.Exec)
    trainer = ""
@@ -173,7 +154,7 @@ def RumManual(config):
    actions = config.Actions
    trainer = GernerateTrainner(config,trainer)
    for action in actions: 
-            config.tipoEscolha="manualImagem"
+            config.tipoEscolha="manual"
             config.acao = action
             
             config.StepChangeGroupRun = int(qtdsActionRun[min (int(action),len(qtdsActionRun)-1 )])
@@ -183,10 +164,39 @@ def RumManual(config):
             trainer.train(config)   
                         
 
+def RunAction( acao ,config,trainer):
+   
+   
+   config.QtdRunAction = [1500]
+   config.Actions = acao
+   config.Exec = 1
+   qtdsActionRun = config.QtdRunAction
+   config.tipoEscolha="DQN"
+   config.acao = acao
+   config.StepChangeGroupRun = int(qtdsActionRun[min (int(acao),len(qtdsActionRun)-1 )])
+   config.GrupDataset =  config.acoes[int(acao)] 
+   config.dataset_train = config.DataSetClevr.create_default_splits_perc(config.path,is_full =True,grupoDatasets=config.GrupDataset,is_loadImage=config.is_loadImage)
+   config.PercDatasetTrain =config.GrupDataset
+   return trainer.train(config)  
+
+def runDQN (episodes):
+    state = [0,0,0,0,0]
+    config = ConfigTrainJupter()
+    trainer = ""
+    trainer = GernerateTrainner(config,trainer)    
+    for i_episode in range(episodes):
+        localhost_save_option = tf.saved_model.SaveOptions(experimental_io_device="/job:localhost")
+        
+       
+        model = tf.keras.models.load_model('D:/source/PesquisaMestradoFinal/interaction_20/',options=localhost_save_option)
+       
+       
+        model = tf.keras.models.load_model('Execucao_10\model_0\interaction_'+str(i_episode))
+        action = np.argmax(model.predict(np.array([state]))[0])
+        
+        state_new = RunAction(action ,config )
+        state = [state_new[0],state_new[1],state_new[2],state_new[3],state_new[4]]  
 
 
-if __name__ == '__main__':
-    config = ConfigTrain()
-    RumManual(config) 
-
+runDQN(35)
    

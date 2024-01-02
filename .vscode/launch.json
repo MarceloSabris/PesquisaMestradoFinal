@@ -18,8 +18,12 @@
            //gerar arquivo
            // "args":["--file","c:\\Source\\PesquisaMestrado","--percentualtype","0:0,1:0,2:0,3:0,4:100","--fileGenerate","C:\\Source\\PesquisaMestrado\\datasets\\Sort-of-CLEVR_teste_decode-image4\\tipo4.txt","--quantityfile","40000"]
             //treinar
-             //"args": [ "--datasetPath","Sort-of-CLEVR_teste_decode-image","--trainDir","ExecucaoManual","--batch_size", "100","--QtdRun","100500","--QtdRunTrain","3","--qtdRumGroup", "100500","--QtdLogSave","1500","--GrupsDataset", "1,1,1,1,1"] 
-             "args": [ "--datasetPath","Sort-of-CLEVR_teste_decode-image","--trainDir","ExecucaoAutomatica","--batch_size", "100"]                                                                                                                                                                                                                           
+             "args": [ "--datasetPath","Sort-of-CLEVR_teste_decode-image","--trainDir","ExecucaoManualImagem","--batch_size", "100"] 
+             
+             
+             
+             //"args": [ "--datasetPath","Sort-of-CLEVR_teste_decode-image","--trainDir","ExecucaoManualNova","--batch_size", "100"]                                                                                                                                                                                                                           
+             //"args": [ "--datasetPath","Sort-of-CLEVR_teste_decode-image","--trainDir","ExecucaoManualNovoPasso34","--batch_size", "100"]                                                                                                                                                                                                                           
                                                                                                                                                                                                                                                            
             //evaler
                                           

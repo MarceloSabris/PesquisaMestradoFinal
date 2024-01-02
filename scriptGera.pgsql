@@ -4,7 +4,7 @@ SELECT  passo,acao,
                  ROUND( CAST( AVG( acuracy_questao_2 ) as NUMERIC), 5 ) ,',',
                  ROUND( CAST( AVG( acuracy_questao_3 ) as NUMERIC), 5 ) ,',',
                  ROUND( CAST( AVG( acuracy_questao_4 ) as NUMERIC), 5 ) ,']') from "Curriculos1"
-where curriculo like  'ExecucaoAutomatica_19122023_1628_exec_%' 
+where porcentagem = '0.5,0.5,0.5,0.1,0.1' and  tipoescolha ='manual'
 GROUP BY passo,acao order by passo
 
 
