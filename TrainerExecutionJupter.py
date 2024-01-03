@@ -12,8 +12,7 @@ import DataBase as db
 import easydict 
 
 
-
-def ConfigTrainJupter(): 
+def ConfigTrainJupter(type='1'): 
    config =  easydict.EasyDict({
     "batch_size": 100,
     "train_steps": 1000
@@ -23,7 +22,7 @@ def ConfigTrainJupter():
    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
              
    config.datasetPath =  'Sort-of-CLEVR_teste_decode-image'
-   config.trainDir =  'TesteDQN'
+   config.trainDir = os.path.join('/content/drive/MyDrive/Colab Notebooks/CodigoPesquisa/Execution','TesteDQN_'+str(type))
    config.path_restore_train =  ''
    config.learning_rate = 2.5e-4
    config.lr_weight_decay = False
@@ -34,8 +33,9 @@ def ConfigTrainJupter():
    config.Actions = 5
    config.QtdRunTrain = 1
    config.is_loadImage = False 
-   
-   config.path =  os.path.join('./datasets', config.datasetPath  ) 
+      
+
+   config.path =  os.path.join('/content/drive/MyDrive/Colab Notebooks/CodigoPesquisa/DataSets', config.datasetPath  ) 
 
     #variaveis para controle de execução tempo 
    config.tempogravarlog  =0                            
@@ -180,20 +180,12 @@ def RunAction( acao ,config,trainer):
 def runDQN (episodes):
     state = [0,0,0,0,0]
     config = ConfigTrainJupter()
-    trainer = ""
-    trainer = GernerateTrainner(config,trainer)    
-    for i_episode in range(episodes):
-        localhost_save_option = tf.saved_model.SaveOptions(experimental_io_device="/job:localhost")
         
-       
-        model = tf.keras.models.load_model('D:/source/PesquisaMestradoFinal/interaction_20/',options=localhost_save_option)
-       
-       
-        model = tf.keras.models.load_model('Execucao_10\model_0\interaction_'+str(i_episode))
+    for i_episode in range(episodes):
+        model = tf.keras.models.load_model('trainDir/' +config.trainDir + '/keras/')
         action = np.argmax(model.predict(np.array([state]))[0])
         
         state_new = RunAction(action ,config )
         state = [state_new[0],state_new[1],state_new[2],state_new[3],state_new[4]]  
-
 
    
