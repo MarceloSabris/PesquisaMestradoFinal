@@ -10,12 +10,10 @@ import sort_of_clevr as DataSetClevr
 from input_ops import create_input_ops
 import DataBase as db
 import easydict 
-def teste(a): 
-    print('************************************************oi')
+
 
 
 def ConfigTrainJupter(): 
-   print('************************************************oi')
    config =  easydict.EasyDict({
     "batch_size": 100,
     "train_steps": 1000
@@ -198,5 +196,4 @@ def runDQN (episodes):
         state = [state_new[0],state_new[1],state_new[2],state_new[3],state_new[4]]  
 
 
-runDQN(35)
    

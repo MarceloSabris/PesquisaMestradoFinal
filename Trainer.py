@@ -247,6 +247,7 @@ class Trainer(object):
                     
                     temp=[]
                     temp.append( str( config.trainGlobal))
+                    temp.append(  str(config.trainDir) )
                     temp.append(str(accuracy))
                     temp.append(str(accuracy_test))
                     temp.append(str(questaotipo0))
@@ -254,6 +255,11 @@ class Trainer(object):
                     temp.append(str(questaotipo2))
                     temp.append(str(questaotipo3))
                     temp.append(str(questaotipo4))    
+                    temp.append(str(config.PercDatasetTrain))
+                    temp.append(str(config.tipoEscolha))
+                    temp.append(str(config.acao))
+                    temp.append(str(0))
+                    temp.append(str(0))
                     self.GravarCSV(temp,'Logs')
                     
                     temp=[]
