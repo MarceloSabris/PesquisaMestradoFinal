@@ -48,7 +48,7 @@ class Trainer(object):
                  dataset,
                  dataset_test):
         
-        hyper_parameter_str = config.datasetPath+'_lr_'+str(config.learning_rate)
+       # hyper_parameter_str = config.datasetPath+'_lr_'+str(config.learning_rate)
         #self.trainDir = './trainDir/%s-%s-%s-%s' % (
         #    config.model,
         #    config.prefix,
@@ -105,7 +105,7 @@ class Trainer(object):
         
         self.ArrayQuestoesCertas = [] 
         self.ArrarQuestoesErradas =[]
-        self.check_pathSaveTrain= config.trainDir
+        #self.check_pathSaveTrain= config.trainDir
         self.ArrayTotalQuestoesCertas =[0,0,0,0,0]
         self.ArrayTotalQuestoesErradas =[0,0,0,0,0]
        
@@ -121,26 +121,28 @@ class Trainer(object):
         )
        
         self.summary_op = tf.compat.v1.summary.merge_all()
+        #salvar
         #import tfplot
-        self.plot_summary_op =  tf.compat.v1.summary.merge_all()
-      
-        self.saver = tf.compat.v1.train.Saver(max_to_keep=10000)
-        
-        self.summary_writer = tf.compat.v1.summary.FileWriter(self.trainDir)
+        #self.plot_summary_op =  tf.compat.v1.summary.merge_all()
+        #salvar 
+        #self.saver = tf.compat.v1.train.Saver(max_to_keep=10000)
+        #self.summary_writer = tf.compat.v1.summary.FileWriter(self.trainDir)
     
         
         self.pathDataSets = os.path.join('./datasets', config.datasetPath)
         self.checkpoint_secs = 60000  # 10 min
         self.acuracy = [] 
         self.step = []
+        #savar arquivo
         self.supervisor = tf.compat.v1.train.Supervisor(
-            logdir=self.trainDir,
-            is_chief=True,
-            saver=None,
-            summary_op=None,
-            summary_writer=self.summary_writer,
-            save_summaries_secs=3000,
-            save_model_secs=self.checkpoint_secs,
+        #      logdir=self.trainDir,
+               is_chief=True,
+              saver=None,
+              summary_op=None,
+        #    summary_writer=self.summary_writer, salvar
+        #    save_summaries_secs=3000,
+        
+        #    save_model_secs=self.checkpoint_secs,
             global_step=self.global_step,
         )
         tf.test.is_gpu_available()
@@ -150,12 +152,13 @@ class Trainer(object):
 
         session_config = tf.compat.v1.ConfigProto(
             allow_soft_placement=True,
-             intra_op_parallelism_threads=8,
-             inter_op_parallelism_threads=8,
+             intra_op_parallelism_threads=16,
+             inter_op_parallelism_threads=16,
             gpu_options=tf.compat.v1.GPUOptions(allow_growth=True),
             device_count={'GPU': 2},
         )
         #self.tf_config.gpu_options.allow_growth=True
+        #gavar arquivo
         self.session = self.supervisor.prepare_or_wait_for_session(config=session_config)
         self.session.graph._unsafe_unfinalize()
 
@@ -282,8 +285,8 @@ class Trainer(object):
                        
                     totalTempoGravarArquivoLog = totalTempoGravarArquivoLog + (time.time() -  tempogravarlog)
                     
-
-                    self.summary_writer.add_summary(summary, global_step=config.trainGlobal )         
+                   #salvar
+                   # self.summary_writer.add_summary(summary, global_step=config.trainGlobal )         
 
                 #log.infov( 'Tempo total treinamentoada' + str((time.time() - _tempoPorRodada)))
                     now = datetime.now()
@@ -292,13 +295,14 @@ class Trainer(object):
 
                     inicioTempoGravaRede = time.time()
                     log.infov( "%s Saved checkpoint at %d",config.trainGlobal,  s) 
-                    try: 
-                       save_path = self.saver.save(self.session,
-                                            os.path.join(self.trainDir, 'model'),
-                                            global_step=step)
-                    except Exception as error:
-                       print('****************** erro -- ao executar ***********')
-                       print(error) 
+                    #salvar
+                    #try: 
+                    #   save_path = self.saver.save(self.session,
+                    #                        os.path.join(self.trainDir, 'model'),
+                    #                        global_step=step)
+                    #except Exception as error:
+                    #   print('****************** erro -- ao executar ***********')
+                    #   print(error) 
                     
                     TotalTempoGravaRede = TotalTempoGravaRede + (time.time() -inicioTempoGravaRede )
           if ( stepExecution >1 and  stepExecution%(10*config.dataset_train.maxGrups)  == 0): 
@@ -323,7 +327,8 @@ class Trainer(object):
           stepExecution = stepExecution+1     
           config.trainPosition = config.trainPosition + 1      
           config.trainGlobal = config.trainGlobal +1
-        self.plot_acuracy()
+        #salvar arquivo
+        #self.plot_acuracy()
         _end_time_total = time.time()
     
         log.info('Tempo total de validacao'+ str(step_time_test_Total))
@@ -399,7 +404,7 @@ class Trainer(object):
             i=i+1
         accuracy_test,avg_nr,avg_r = self.report(step,tipo)
         _end_time = time.time() 
-        tf.compat.v1.summary.scalar("loss/accuracy_test", (accuracy_test))
+        #tf.compat.v1.summary.scalar("loss/accuracy_test", (accuracy_test))
         self._ids=[]
         self._questions=[]
         self._answers=[]

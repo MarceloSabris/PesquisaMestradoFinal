@@ -12,7 +12,7 @@ import DataBase as db
 import easydict 
 
 
-def ConfigTrainJupter(type='1'): 
+def ConfigTrainJupter(name_file, type='1'): 
    config =  easydict.EasyDict({
     "batch_size": 100,
     "train_steps": 1000
@@ -21,8 +21,8 @@ def ConfigTrainJupter(type='1'):
    tf.test.is_gpu_available()
    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
              
-   config.datasetPath =  'Sort-of-CLEVR_teste_decode-image'
-   config.trainDir = os.path.join('/content/drive/MyDrive/Colab Notebooks/CodigoPesquisa/Execution','TesteDQN_'+str(type))
+   config.datasetPath = '{}_{}'.format('Sort-of-CLEVR_teste_decode-image', type)
+   config.trainDir = os.path.join('/content/drive/MyDrive/Colab Notebooks/CodigoPesquisa/Execution','TesteDQN_'+str(name_file))
    config.path_restore_train =  ''
    config.learning_rate = 2.5e-4
    config.lr_weight_decay = False
@@ -188,4 +188,7 @@ def runDQN (episodes):
         state_new = RunAction(action ,config )
         state = [state_new[0],state_new[1],state_new[2],state_new[3],state_new[4]]  
 
-   
+data = time.strftime(r"%d%m%Y_%H%M", time.localtime())
+config = ConfigTrainJupter('TypeReward' +"_"+data)
+trainer = ""
+trainer = GernerateTrainner(config,trainer)

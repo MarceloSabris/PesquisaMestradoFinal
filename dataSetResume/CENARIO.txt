@@ -1,20 +1,6 @@
-************************ Inicio Execução Grupo ********************************
-******* Grupo: ******** - qtdExcution:10, multis:1, TypeActions:2, TypeRewards:MIN,MAX,MAX_LAST,MIN_LAST  
-******* Config:  ******** - layers:[25, 50, 25], intFactor:6, epsilon:0.0025, episodes:10 
-******* Config:  ******** - n_times_batch:100, batchDQN:400, learning_rate:0.01, gamma:1, power:0.5
-******************************* Execução item *****************************  
-******* Parametros:  ******** - Tipo Ação:2, Fator de multiplicação:1, Tipo Recompensa:MIN 
-************************************************************
 
-
-
-*********************** Inicio Execução Grupo ********************************
-******* Grupo: ******** - qtdExcution:10, multis:1,-1, TypeActions:1,2, TypeRewards:MIN,MAX,MIN_LAS,MAX_LAST  
-******* Config:  ******** - layers:[10, 10], intFactor:3, epsilon:0.005, episodes:10 
-******* Config:  ******** - n_times_batch:50, batchDQN:1000, learning_rate:0.1, gamma:1, power:0.5
-
-                                               ep:10 
-layers:[25, 50, 25]    layers:[10, 10]        layers:[25,50,25]  
+                           inicial                ep:10 
+layers:[25, 50, 25]    layers:[10, 10]        layers:[25,50,25]        50,25    
 intFactor:6            intFactor:3            intFactor: 2          
             
 epsilon:0.0025         epsilon:0.005	      epsilon:0.0025		
@@ -23,7 +9,15 @@ n_times_batch:100      n_times_batch:50		  n_times_batch:100
  batchDQN:400,         batchDQN:1000		  batchDQN:400	
  
  
+ 
+ 
+ 
  10 epso 
     10 Exp * 6  
 	       60 exp 
 	
+"0.1,0.1,0.1,1,1",
+"0.5,0.5,0.5,1,1",
+"1,1,1,1,1",
+"1,1,1,0,5,0.5",
+"1,1,1,0.1,0.1"

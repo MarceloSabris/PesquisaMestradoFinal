@@ -165,8 +165,8 @@ def RumTrainner(config):
 def RumManual(config): 
 
    config.QtdRunAction = [100500]
-   config.Actions = [0]
-   config.Exec = 1
+   config.Actions = [2]
+   config.Exec = 0
    config.trainDir = config.trainDir + "_Acao_"+ str(config.Actions[0])+ "_exec_" + str(config.Exec)
    trainer = ""
    qtdsActionRun = config.QtdRunAction
