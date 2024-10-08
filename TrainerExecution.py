@@ -55,7 +55,8 @@ def ConfigTrain() :
    
 
     #Variaveis globais config 
-   config.path =   path = os.path.join('./datasets', config.datasetPath  ) 
+   config.path =   path = os.path.join('./datasets', config.datasetPath  )  
+   
 
     #variaveis para controle de execução tempo 
    config.tempogravarlog  =0                            
@@ -165,7 +166,7 @@ def RumTrainner(config):
 def RumManual(config): 
 
    config.QtdRunAction = [100500]
-   config.Actions = [2]
+   config.Actions = [3]
    config.Exec = 0
    config.trainDir = config.trainDir + "_Acao_"+ str(config.Actions[0])+ "_exec_" + str(config.Exec)
    trainer = ""

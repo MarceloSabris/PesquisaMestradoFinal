@@ -153,7 +153,7 @@ def create_default_splits(path, is_train=True, is_shuffe = False,is_full =False,
     dataset_test = Dataset(ids[num_trains:], path, name='test', is_train=False,is_loadImage = is_loadImage)
     return dataset_train, dataset_test
 
-def create_default_splits_perc(path, is_train=True, is_shuffe = False,is_full =False,tipo='[0]',grupoDatasets=[],OrdemDados='E',is_loadImage= False):
+def create_default_splits_perc(path, is_train=True, is_shuffe = False,is_full =False,tipo='[0]',grupoDatasets=[],OrdemDados='E',is_loadImage= False,qtdQuestoes = 0):
     ids=[] 
     #if len(grupoDatasets) ==0 : 
     #   ids = perc_ids(path,ids,"tipo"+tipo+".txt",porcentual)
@@ -166,12 +166,13 @@ def create_default_splits_perc(path, is_train=True, is_shuffe = False,is_full =F
                if OrdemDados =='E' : 
                   np.random.shuffle(ids)  
    
-   
+    if qtdQuestoes > 0 : 
+      ids = ids[:qtdQuestoes]
     dataset_train = Dataset(ids, path, name='train', is_train=True,is_loadImage = is_loadImage)
     #dataset_test = Dataset(ids[num_trains:], path, name='test', is_train=False)
     return dataset_train
 
-def updateIdsDataSet (path,data,tipo='[0]',grupoDatasets=[]):
+def updateIdsDataSet (path,data,tipo='[0]',grupoDatasets=[], qtdQuestoes = 0):
     ids=[] 
     #if len(grupoDatasets) ==0 : 
     #   ids = perc_ids(path,ids,"tipo"+tipo+".txt",porcentual)
@@ -181,6 +182,9 @@ def updateIdsDataSet (path,data,tipo='[0]',grupoDatasets=[]):
             ids=  perc_ids(path,ids,"tipo"+str(contador)+".txt",float(grupoDataset))
             contador = contador +1     
             np.random.shuffle(ids)
+    if qtdQuestoes > 0 : 
+      ids = ids[:qtdQuestoes]
+    
     return data.updateIDS(ids)
     
 

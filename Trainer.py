@@ -64,10 +64,10 @@ class Trainer(object):
         # --- input ops ---
         self.batch_size = config.batch_size
         self.data = data
-        
         _, self.batch_train,imgs = create_input_ops(dataset, self.batch_size,shuffle=False,
                                                is_training=True,is_loadImage= config.is_loadImage)
-
+       
+            
         _, self.batch_test,ims = create_input_ops(dataset_test, self.batch_size,shuffle=False,                                          
                                               is_training=False,is_loadImage= config.is_loadImage)
         self.DataSetPath = os.path.join('./datasets', config.datasetPath)
@@ -336,7 +336,10 @@ class Trainer(object):
         log.info( 'Tempo total para gravar log' + str((totalTempoGravarArquivoLog)))
         log.info( 'Tempo total para gravar rede' + str((TotalTempoGravaRede)))
         log.info( 'Tempo total' + str((_end_time_total - _start_time_total)))
-        
+        batch_train = None 
+        imgs = None
+         
+          
         return questaotipo0,questaotipo1,questaotipo2,questaotipo3,questaotipo4        
        
 
